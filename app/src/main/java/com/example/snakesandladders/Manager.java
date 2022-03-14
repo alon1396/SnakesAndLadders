@@ -12,9 +12,6 @@ public class Manager {
     public static final int maxY = 9;
     public static final int maxX = 7;
 
-    private int lastY;
-    private int lastX;
-
     private boolean isLeft; // T - לך ימינה F - לך שמאלה
     private int[][] mat;
     private Special[] special;
@@ -47,6 +44,7 @@ public class Manager {
         mat[maxY - 1][maxX - 1] = R.drawable.player;
         this.money = 0;
 
+
         this.special = new Special[]{
                 new Special(2, 2, 2, 0, "l"),
                 new Special(4, 3, 3, 2, "l"),
@@ -60,23 +58,18 @@ public class Manager {
         };
     }
 
-    public void movePlayer(int steps, boolean finalStep) {
+    public void movePlayer(int steps) {
         this.money += steps * 30000;
-        lastY = playerY;
-        lastX = playerX;
+        int lastY = playerY;
+        int lastX = playerX;
         if (this.isLeft)
             movePlayerLeft(steps);
         else
             movePlayerRight(steps);
-        if (finalStep)
-            movePlayerSpecial();
+        movePlayerSpecial();
         mat[lastY][lastX] = R.color.transparent;
         mat[playerY][playerX] = R.drawable.player;
     }
-
-//    public void updateMat() {
-//
-//    }
 
     public void movePlayerLeft(int steps) {
         int newY = playerY;
@@ -126,7 +119,8 @@ public class Manager {
     public int roll() {
         Random rnd = new Random();
         int num = rnd.nextInt(6) + 1;
-        return num;
+        movePlayer(num);
+        return cubes[num];
     }
 
     public int getMoney() {
@@ -139,21 +133,5 @@ public class Manager {
 
     public boolean didWin() {
         return playerX == 0 && playerY == 0;
-    }
-
-    public int getPlayerY() {
-        return playerY;
-    }
-
-    public int getPlayerX() {
-        return playerX;
-    }
-
-    public int getLastY() {
-        return lastY;
-    }
-
-    public int getLastX() {
-        return lastX;
     }
 }
